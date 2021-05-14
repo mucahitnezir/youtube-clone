@@ -1,6 +1,6 @@
 using VideoApp.Core.Entities;
 
-namespace VideoApp.Entities.Dtos
+namespace VideoApp.Entities.DTOs
 {
     public class UserForLoginDto : IDto
     {

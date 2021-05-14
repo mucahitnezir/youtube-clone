@@ -3,7 +3,7 @@ using VideoApp.Business.Abstract;
 using VideoApp.Core.Entities.Concrete;
 using VideoApp.Core.Utilities.Results;
 using VideoApp.Core.Utilities.Security.Hashing;
-using VideoApp.Entities.Dtos;
+using VideoApp.Entities.DTOs;
 
 namespace VideoApp.Business.Concrete
 {

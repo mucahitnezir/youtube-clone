@@ -1,6 +1,6 @@
 using VideoApp.Core.Entities.Concrete;
 using VideoApp.Core.Utilities.Results;
-using VideoApp.Entities.Dtos;
+using VideoApp.Entities.DTOs;
 
 namespace VideoApp.Business.Abstract
 {

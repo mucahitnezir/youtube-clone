@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using VideoApp.Core.Utilities.Results;
 using VideoApp.Entities.Concrete;
-using VideoApp.Entities.Dtos;
+using VideoApp.Entities.DTOs;
 
 namespace VideoApp.Business.Abstract
 {

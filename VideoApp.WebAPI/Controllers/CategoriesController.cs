@@ -2,7 +2,7 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using VideoApp.Business.Abstract;
 using VideoApp.Entities.Concrete;
-using VideoApp.Entities.Dtos;
+using VideoApp.Entities.DTOs;
 
 namespace VideoApp.WebAPI.Controllers
 {

@@ -4,7 +4,7 @@ using VideoApp.Business.Abstract;
 using VideoApp.Core.Utilities.Results;
 using VideoApp.DataAccess.Abstract;
 using VideoApp.Entities.Concrete;
-using VideoApp.Entities.Dtos;
+using VideoApp.Entities.DTOs;
 
 namespace VideoApp.Business.Concrete
 {
