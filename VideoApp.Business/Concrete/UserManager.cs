@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using VideoApp.Business.Abstract;
 using VideoApp.Core.Entities.Concrete;
 using VideoApp.Core.Utilities.Results;
@@ -29,6 +30,11 @@ namespace VideoApp.Business.Concrete
         {
             _userDal.Add(user);
             return new SuccessResult();
+        }
+
+        public List<OperationClaim> GetClaims(User user)
+        {
+            return _userDal.GetClaims(user);
         }
     }
 }

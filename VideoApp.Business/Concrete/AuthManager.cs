@@ -4,21 +4,18 @@ using VideoApp.Core.Entities.Concrete;
 using VideoApp.Core.Utilities.Results;
 using VideoApp.Core.Utilities.Security.Hashing;
 using VideoApp.Core.Utilities.Security.Jwt;
-using VideoApp.DataAccess.Abstract;
 using VideoApp.Entities.DTOs;
 
 namespace VideoApp.Business.Concrete
 {
     public class AuthManager : IAuthService
     {
-        private readonly IUserDal _userDal;
         private readonly IUserService _userService;
         private readonly ITokenHelper _tokenHelper;
 
-        public AuthManager(IUserService userService, IUserDal userDal, ITokenHelper tokenHelper)
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper)
         {
             _userService = userService;
-            _userDal = userDal;
             _tokenHelper = tokenHelper;
         }
 
@@ -75,7 +72,7 @@ namespace VideoApp.Business.Concrete
 
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {
-            var claims = _userDal.GetClaims(user);
+            var claims = _userService.GetClaims(user);
             var accessToken = _tokenHelper.CreateToken(user, claims);
             return new SuccessDataResult<AccessToken>(accessToken, "Access token is created.");
         }
