@@ -7,6 +7,8 @@ namespace VideoApp.DataAccess.Concrete.EntityFramework
     public class VideoAppContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<OperationClaim> OperationClaims { get; set; }
+        public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Channel> Channels { get; set; }
         public DbSet<Comment> Comments { get; set; }
