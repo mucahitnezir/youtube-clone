@@ -13,5 +13,7 @@ namespace VideoApp.Entities.Concrete
         [ForeignKey("Channel")]
         public Guid ChannelId { get; set; }
         public virtual Channel Channel { get; set; }
+
+        public bool Notification { get; set; }
     }
 }

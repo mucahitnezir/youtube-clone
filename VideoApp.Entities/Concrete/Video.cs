@@ -29,6 +29,7 @@ namespace VideoApp.Entities.Concrete
         public DateTime PublishDate { get; set; }
         public uint Views { get; set; }
 
+        public ICollection<Comment> Comments { get; set; }
         public ICollection<PlaylistVideo> PlaylistVideos { get; set; }
     }
 }
