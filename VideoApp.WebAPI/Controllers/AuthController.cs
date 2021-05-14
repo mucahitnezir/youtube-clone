@@ -1,3 +1,6 @@
+using System;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VideoApp.Business.Abstract;
 using VideoApp.Entities.DTOs;
@@ -9,10 +12,12 @@ namespace VideoApp.WebAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IUserService _userService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IUserService userService)
         {
             _authService = authService;
+            _userService = userService;
         }
 
         [HttpPost("register")]
@@ -43,6 +48,17 @@ namespace VideoApp.WebAPI.Controllers
             }
 
             return Ok(tokenResult.Data);
+        }
+
+        [HttpPut("change-password")]
+        [Authorize]
+        public IActionResult ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
+        {
+            var currentUser = HttpContext.User;
+            var userId = new Guid(currentUser.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty);
+
+            var result = _userService.ChangePassword(userId, changePasswordDto);
+            return result.Success ? Ok(result) : BadRequest(result);
         }
     }
 }
