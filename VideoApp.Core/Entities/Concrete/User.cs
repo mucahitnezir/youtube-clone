@@ -1,5 +1,3 @@
-using System;
-
 namespace VideoApp.Core.Entities.Concrete
 {
     public class User : EntityBase
