@@ -17,9 +17,9 @@ namespace VideoApp.DataAccess.Concrete.EntityFramework
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<Video> Videos { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public VideoAppContext(DbContextOptions<VideoAppContext> options) : base(options)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Database=youtube;Username=postgres;Password=1234abc");
+            
         }
     }
 }

@@ -6,6 +6,8 @@ namespace VideoApp.DataAccess.Concrete.EntityFramework
 {
     public class EfCategoryDal : EfEntityRepositoryBase<Category, VideoAppContext>, ICategoryDal
     {
-        
+        public EfCategoryDal(VideoAppContext context) : base(context)
+        {
+        }
     }
 }

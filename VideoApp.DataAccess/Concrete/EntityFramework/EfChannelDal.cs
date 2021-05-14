@@ -6,5 +6,8 @@ namespace VideoApp.DataAccess.Concrete.EntityFramework
 {
     public class EfChannelDal : EfEntityRepositoryBase<Channel, VideoAppContext>, IChannelDal
     {
+        public EfChannelDal(VideoAppContext context) : base(context)
+        {
+        }
     }
 }

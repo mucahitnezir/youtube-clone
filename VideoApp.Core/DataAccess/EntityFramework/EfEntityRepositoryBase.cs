@@ -9,44 +9,46 @@ namespace VideoApp.Core.DataAccess.EntityFramework
 {
     public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEntity>
         where TEntity : EntityBase, new()
-        where TContext : DbContext, new()
+        where TContext : DbContext
     {
+        protected TContext Context;
+
+        public EfEntityRepositoryBase(TContext context)
+        {
+            Context = context;
+        }
+
         public TEntity Get(Expression<Func<TEntity, bool>> filter)
         {
-            using var context = new TContext();
-            return context.Set<TEntity>().SingleOrDefault(filter);
+            return Context.Set<TEntity>().SingleOrDefault(filter);
         }
 
         public IList<TEntity> GetList(Expression<Func<TEntity, bool>> filter = null)
         {
-            using var context = new TContext();
             return filter == null
-                ? context.Set<TEntity>().ToList()
-                : context.Set<TEntity>().Where(filter).ToList();
+                ? Context.Set<TEntity>().ToList()
+                : Context.Set<TEntity>().Where(filter).ToList();
         }
 
         public void Add(TEntity entity)
         {
-            using var context = new TContext();
-            var entry = context.Entry(entity);
+            var entry = Context.Entry(entity);
             entry.State = EntityState.Added;
-            context.SaveChanges();
+            Context.SaveChanges();
         }
 
         public void Update(TEntity entity)
         {
-            using var context = new TContext();
-            var entry = context.Entry(entity);
+            var entry = Context.Entry(entity);
             entry.State = EntityState.Modified;
-            context.SaveChanges();
+            Context.SaveChanges();
         }
 
         public void Delete(TEntity entity)
         {
-            using var context = new TContext();
-            var entry = context.Entry(entity);
+            var entry = Context.Entry(entity);
             entry.State = EntityState.Deleted;
-            context.SaveChanges();
+            Context.SaveChanges();
         }
     }
 }
