@@ -67,7 +67,6 @@ namespace VideoApp.WebAPI.Controllers
                 CreatedAt = user.CreatedAt
             };
             return Ok(userDto);
-
         }
 
         [HttpPut("change-password")]
