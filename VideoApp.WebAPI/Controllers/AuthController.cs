@@ -26,5 +26,23 @@ namespace VideoApp.WebAPI.Controllers
             var result = _authService.Register(userForRegisterDto);
             return result.Success ? Ok(result.Message) : BadRequest(result.Message);
         }
+        
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] UserForLoginDto userForLoginDto)
+        {
+            var userToLoginResult = _authService.Login(userForLoginDto);
+            if (!userToLoginResult.Success)
+            {
+                return BadRequest(userToLoginResult.Message);
+            }
+
+            var tokenResult = _authService.CreateAccessToken(userToLoginResult.Data);
+            if (!tokenResult.Success)
+            {
+                return BadRequest(tokenResult.Message);
+            }
+
+            return Ok(tokenResult.Data);
+        }
     }
 }

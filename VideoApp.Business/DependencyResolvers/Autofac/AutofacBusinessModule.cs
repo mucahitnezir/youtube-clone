@@ -1,6 +1,7 @@
 using Autofac;
 using VideoApp.Business.Abstract;
 using VideoApp.Business.Concrete;
+using VideoApp.Core.Utilities.Security.Jwt;
 using VideoApp.DataAccess.Abstract;
 using VideoApp.DataAccess.Concrete.EntityFramework;
 
@@ -18,8 +19,9 @@ namespace VideoApp.Business.DependencyResolvers.Autofac
 
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<EfUserDal>().As<IUserDal>();
-            
+
             builder.RegisterType<AuthManager>().As<IAuthService>();
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>();
         }
     }
 }
