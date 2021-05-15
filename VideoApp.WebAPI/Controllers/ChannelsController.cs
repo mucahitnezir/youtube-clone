@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VideoApp.Business.Abstract;
 using VideoApp.Entities.DTOs;
@@ -31,6 +32,7 @@ namespace VideoApp.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add([FromBody] ChannelDto channelDto)
         {
             var result = _channelService.Add(channelDto);
@@ -38,6 +40,7 @@ namespace VideoApp.WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public IActionResult Update(Guid id, ChannelUpdateDto channelUpdateDto)
         {
             var result = _channelService.Update(id, channelUpdateDto);

@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VideoApp.Business.Abstract;
 using VideoApp.Entities.DTOs;
@@ -24,13 +25,15 @@ namespace VideoApp.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Category.Add")]
         public IActionResult Add([FromBody] CategoryDto categoryDto)
         {
             var result = _categoryService.Add(categoryDto);
             return result.Success ? Ok(result.Message) : BadRequest(result.Message);
         }
-        
+
         [HttpPut("{id}")]
+        [Authorize(Roles = "Category.Update")]
         public IActionResult Update(Guid id, [FromBody] CategoryDto categoryDto)
         {
             var result = _categoryService.Update(id, categoryDto);
