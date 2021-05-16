@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using VideoApp.Core.Utilities.Security.Encryption;
 using VideoApp.Core.Utilities.Security.Jwt;
 using VideoApp.DataAccess.Concrete.EntityFramework;
@@ -21,7 +25,7 @@ namespace VideoApp.WebAPI
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -66,10 +70,7 @@ namespace VideoApp.WebAPI
 
                 c.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
 
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {jwtSecurityScheme, Array.Empty<string>()}
-                });
+                c.OperationFilter<AuthorizationOperationFilter>();
             });
 
             services.AddDbContext<VideoAppContext>(options =>
@@ -98,6 +99,44 @@ namespace VideoApp.WebAPI
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        }
+    }
+
+    class AuthorizationOperationFilter : IOperationFilter
+    {
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            var actionMetadata = context.ApiDescription.ActionDescriptor.EndpointMetadata;
+            var isAuthorized = actionMetadata.Any(metadataItem => metadataItem is AuthorizeAttribute);
+            var allowAnonymous = actionMetadata.Any(metadataItem => metadataItem is AllowAnonymousAttribute);
+
+            if (!isAuthorized || allowAnonymous)
+            {
+                return;
+            }
+
+            operation.Parameters ??= new List<OpenApiParameter>();
+
+            operation.Security = new List<OpenApiSecurityRequirement>();
+
+            // Add JWT bearer type
+            operation.Security.Add(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                // Definition name. 
+                                // Should exactly match the one given in the service configuration
+                                Id = JwtBearerDefaults.AuthenticationScheme,
+                                Type = ReferenceType.SecurityScheme
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                }
+            );
         }
     }
 }
