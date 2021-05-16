@@ -23,15 +23,22 @@ namespace VideoApp.WebAPI.Controllers
         [HttpPost("register")]
         public IActionResult Register([FromBody] UserForRegisterDto userForRegisterDto)
         {
-            var userExist = _authService.UserExists(userForRegisterDto.Email);
-            if (userExist.Success)
+            var userExistResult = _authService.UserExists(userForRegisterDto.Email);
+            if (userExistResult.Success)
             {
-                return BadRequest(userExist.Message);
+                return BadRequest(userExistResult);
             }
-            var result = _authService.Register(userForRegisterDto);
-            return result.Success ? Ok(result.Message) : BadRequest(result.Message);
+
+            var registerResult = _authService.Register(userForRegisterDto);
+            if (!registerResult.Success)
+            {
+                return BadRequest(registerResult);
+            }
+
+            var tokenResult = _authService.CreateAccessToken(registerResult.Data);
+            return Ok(tokenResult.Data);
         }
-        
+
         [HttpPost("login")]
         public IActionResult Login([FromBody] UserForLoginDto userForLoginDto)
         {
