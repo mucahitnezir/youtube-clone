@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using VideoApp.DataAccess.Concrete.EntityFramework;
@@ -9,9 +10,10 @@ using VideoApp.DataAccess.Concrete.EntityFramework;
 namespace VideoApp.DataAccess.Migrations
 {
     [DbContext(typeof(VideoAppContext))]
-    partial class VideoAppContextModelSnapshot : ModelSnapshot
+    [Migration("20210516091617_ImageUrlToImagePath")]
+    partial class ImageUrlToImagePath
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

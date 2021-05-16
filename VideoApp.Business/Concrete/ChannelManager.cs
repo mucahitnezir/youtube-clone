@@ -66,7 +66,7 @@ namespace VideoApp.Business.Concrete
                 Id = id,
                 Name = channelUpdateDto.Name,
                 Slug = channelUpdateDto.Slug,
-                ImageUrl = channelUpdateDto.ImageUrl,
+                ImagePath = channelUpdateDto.ImagePath,
                 UpdatedAt = DateTime.Now
             };
             _channelDal.Update(channel);

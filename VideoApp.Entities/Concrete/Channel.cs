@@ -14,7 +14,7 @@ namespace VideoApp.Entities.Concrete
 
         public string Name { get; set; }
         public string Slug { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImagePath { get; set; }
         public bool Verified { get; set; }
 
         public ICollection<Video> Videos { get; set; }
