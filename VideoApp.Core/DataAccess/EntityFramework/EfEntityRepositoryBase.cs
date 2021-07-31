@@ -11,7 +11,7 @@ namespace VideoApp.Core.DataAccess.EntityFramework
         where TEntity : EntityBase, new()
         where TContext : DbContext
     {
-        protected TContext Context;
+        protected readonly TContext Context;
 
         public EfEntityRepositoryBase(TContext context)
         {
