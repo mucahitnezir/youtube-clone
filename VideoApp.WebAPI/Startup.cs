@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using VideoApp.Business.AutoMapper;
 using VideoApp.Core.Utilities.Security.Encryption;
 using VideoApp.Core.Utilities.Security.Jwt;
 using VideoApp.DataAccess.Concrete.EntityFramework;
@@ -78,6 +80,13 @@ namespace VideoApp.WebAPI
                 var connectionStr = Configuration.GetConnectionString("VideoApp");
                 options.UseNpgsql(connectionStr);
             });
+            
+            // Auto Mapper Configurations  
+            var mappingConfig = new MapperConfiguration(mc => {
+                mc.AddProfile(new AutoMapperProfile());
+            });
+            var mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
