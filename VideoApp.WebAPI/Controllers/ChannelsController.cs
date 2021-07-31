@@ -21,14 +21,20 @@ namespace VideoApp.WebAPI.Controllers
         public IActionResult GetList()
         {
             var result = _channelService.GetList();
-            return result.Success ? Ok(result.Data) : BadRequest(result.Message);
+
+            return result.Success
+                ? Ok(result.Data)
+                : BadRequest(result.Message);
         }
         
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
         {
             var channel = _channelService.GetById(id);
-            return Ok(channel);
+
+            return channel != null
+                ? Ok(channel)
+                : NotFound();
         }
 
         [HttpPost]
@@ -36,7 +42,10 @@ namespace VideoApp.WebAPI.Controllers
         public IActionResult Add([FromBody] ChannelDto channelDto)
         {
             var result = _channelService.Add(channelDto);
-            return result.Success ? Ok(result.Message) : BadRequest(result.Message);
+
+            return result.Success
+                ? Ok(result.Message)
+                : BadRequest(result.Message);
         }
 
         [HttpPut("{id}")]
@@ -44,7 +53,10 @@ namespace VideoApp.WebAPI.Controllers
         public IActionResult Update(Guid id, ChannelUpdateDto channelUpdateDto)
         {
             var result = _channelService.Update(id, channelUpdateDto);
-            return result.Success ? Ok(result.Message) : BadRequest(result.Message); 
+
+            return result.Success
+                ? Ok(result.Message)
+                : BadRequest(result.Message); 
         }
     }
 }

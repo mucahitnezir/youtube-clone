@@ -14,10 +14,10 @@ namespace VideoApp.Business.Concrete
         private readonly IMapper _mapper;
         private readonly ICategoryDal _categoryDal;
 
-        public CategoryManager(ICategoryDal categoryDal, IMapper mapper)
+        public CategoryManager(IMapper mapper, ICategoryDal categoryDal)
         {
-            _categoryDal = categoryDal;
             _mapper = mapper;
+            _categoryDal = categoryDal;
         }
 
         public IDataResult<IList<CategoryDto>> GetList()
@@ -30,35 +30,35 @@ namespace VideoApp.Business.Concrete
         public IDataResult<Category> GetById(Guid id)
         {
             var category = _categoryDal.Get(c => c.Id == id);
-            if (category == null)
-            {
-                return new ErrorDataResult<Category>(null, "Category not found!");
-            }
 
-            return new SuccessDataResult<Category>(category);
+            return category == null
+                ? new ErrorDataResult<Category>(null, "Category cannot found!")
+                : new SuccessDataResult<Category>(category);
         }
 
         public IResult Add(CategoryCreateUpdateDto categoryDto)
         {
             var category = _mapper.Map<Category>(categoryDto);
-            _categoryDal.Add(category);
 
-            return new SuccessResult("Category created.");
+            return _categoryDal.Add(category)
+                ? new SuccessResult("Category created.")
+                : new ErrorResult("Category cannot created!");
         }
 
         public IResult Update(Guid id, CategoryCreateUpdateDto categoryDto)
         {
-            var result = GetById(id);
-            if (!result.Success)
+            var categoryResult = GetById(id);
+            if (!categoryResult.Success)
             {
-                return new ErrorResult(result.Message);
+                return new ErrorResult(categoryResult.Message);
             }
 
-            var category = result.Data;
+            var category = categoryResult.Data;
             category.Name = categoryDto.Name;
-            _categoryDal.Update(category);
 
-            return new SuccessResult("Category updated.");
+            return _categoryDal.Update(category)
+                ? new SuccessResult("Category updated.")
+                : new ErrorResult("Category cannot updated!");
         }
     }
 }

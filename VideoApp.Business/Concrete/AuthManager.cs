@@ -31,8 +31,10 @@ namespace VideoApp.Business.Concrete
                 PasswordSalt = passwordSalt,
                 Status = true
             };
-            _userService.Add(user);
-            return new SuccessDataResult<User>(user, "User created.");
+
+            return _userService.Add(user).Success
+                ? new SuccessDataResult<User>(user, "User created.")
+                : new ErrorDataResult<User>(null, "User cannot created");
         }
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)

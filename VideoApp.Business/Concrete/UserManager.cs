@@ -30,8 +30,9 @@ namespace VideoApp.Business.Concrete
 
         public IResult Add(User user)
         {
-            _userDal.Add(user);
-            return new SuccessResult();
+            return _userDal.Add(user)
+                ? new SuccessResult()
+                : new ErrorResult();
         }
 
         public List<OperationClaim> GetClaims(User user)
@@ -41,7 +42,7 @@ namespace VideoApp.Business.Concrete
 
         public IResult ChangePassword(Guid userId, ChangePasswordDto changePasswordDto)
         {
-            var user = this.GetById(userId);
+            var user = GetById(userId);
             if (user == null)
             {
                 return new ErrorResult("User not found!");
@@ -55,9 +56,10 @@ namespace VideoApp.Business.Concrete
             HashingHelper.CreatePasswordHash(changePasswordDto.NewPassword, out var passwordHash, out var passwordSalt);
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-            _userDal.Update(user);
 
-            return new SuccessResult("Password updated.");
+            return _userDal.Update(user)
+                ? new SuccessResult("Password updated.")
+                : new ErrorResult("Password cannot updated");
         }
     }
 }

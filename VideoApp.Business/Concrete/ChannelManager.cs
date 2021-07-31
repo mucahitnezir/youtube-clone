@@ -49,7 +49,11 @@ namespace VideoApp.Business.Concrete
                 Verified = false,
                 UserId = channelDto.UserId
             };
-            _channelDal.Add(channel);
+
+            if (!_channelDal.Add(channel))
+            {
+                return new ErrorResult("Channel cannot created!");
+            }
 
             channel.Slug = channel.Id.ToString();
             _channelDal.Update(channel);
@@ -59,16 +63,20 @@ namespace VideoApp.Business.Concrete
 
         public IResult Update(Guid id, ChannelUpdateDto channelUpdateDto)
         {
-            var channel = new Channel
-            {
-                Id = id,
-                Name = channelUpdateDto.Name,
-                Slug = channelUpdateDto.Slug,
-                ImagePath = channelUpdateDto.ImagePath
-            };
-            _channelDal.Update(channel);
+            var channel = GetById(id);
 
-            return new SuccessResult("Channel updated.");
+            if (channel == null)
+            {
+                return new ErrorResult("Channel cannot found!");
+            }
+
+            channel.Name = channelUpdateDto.Name;
+            channel.Slug = channelUpdateDto.Slug;
+            channel.ImagePath = channelUpdateDto.ImagePath;
+
+            return _channelDal.Update(channel)
+                ? new SuccessResult("Channel updated.")
+                : new ErrorResult("Channel cannot updated!");
         }
     }
 }

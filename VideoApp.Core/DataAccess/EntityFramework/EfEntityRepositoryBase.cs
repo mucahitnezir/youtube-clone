@@ -30,27 +30,33 @@ namespace VideoApp.Core.DataAccess.EntityFramework
                 : Context.Set<TEntity>().Where(filter).ToList();
         }
 
-        public void Add(TEntity entity)
+        public bool Add(TEntity entity)
         {
             entity.CreatedAt = DateTime.Now;
+
             var entry = Context.Entry(entity);
             entry.State = EntityState.Added;
-            Context.SaveChanges();
+
+            return Context.SaveChanges() > 0;
         }
 
-        public void Update(TEntity entity)
+        public bool Update(TEntity entity)
         {
             entity.UpdatedAt = DateTime.Now;
+
             var entry = Context.Entry(entity);
             entry.State = EntityState.Modified;
-            Context.SaveChanges();
+
+            return Context.SaveChanges() > 0;
         }
 
-        public void Delete(TEntity entity)
+        public bool Delete(TEntity entity)
         {
             var entry = Context.Entry(entity);
+
             entry.State = EntityState.Deleted;
-            Context.SaveChanges();
+
+            return Context.SaveChanges() > 0;
         }
     }
 }

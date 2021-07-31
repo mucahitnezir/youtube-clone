@@ -80,7 +80,9 @@ namespace VideoApp.WebAPI.Controllers
             var userId = new Guid(currentUser.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty);
 
             var result = _userService.ChangePassword(userId, changePasswordDto);
-            return result.Success ? Ok(result) : BadRequest(result);
+            return result.Success
+                ? Ok(result)
+                : BadRequest(result);
         }
     }
 }
