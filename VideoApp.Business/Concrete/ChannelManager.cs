@@ -47,9 +47,7 @@ namespace VideoApp.Business.Concrete
             {
                 Name = channelDto.Name,
                 Verified = false,
-                UserId = channelDto.UserId,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
+                UserId = channelDto.UserId
             };
             _channelDal.Add(channel);
 
@@ -66,8 +64,7 @@ namespace VideoApp.Business.Concrete
                 Id = id,
                 Name = channelUpdateDto.Name,
                 Slug = channelUpdateDto.Slug,
-                ImagePath = channelUpdateDto.ImagePath,
-                UpdatedAt = DateTime.Now
+                ImagePath = channelUpdateDto.ImagePath
             };
             _channelDal.Update(channel);
 

@@ -7,13 +7,13 @@ using VideoApp.Core.Entities;
 
 namespace VideoApp.Core.DataAccess.EntityFramework
 {
-    public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEntity>
+    public abstract class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEntity>
         where TEntity : EntityBase, new()
         where TContext : DbContext
     {
         protected readonly TContext Context;
 
-        public EfEntityRepositoryBase(TContext context)
+        protected EfEntityRepositoryBase(TContext context)
         {
             Context = context;
         }

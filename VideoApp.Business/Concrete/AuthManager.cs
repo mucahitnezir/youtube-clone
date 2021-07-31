@@ -1,4 +1,3 @@
-using System;
 using VideoApp.Business.Abstract;
 using VideoApp.Core.Entities.Concrete;
 using VideoApp.Core.Utilities.Results;
@@ -21,8 +20,7 @@ namespace VideoApp.Business.Concrete
 
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto)
         {
-            byte[] passwordHash, passwordSalt;
-            HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out passwordHash, out passwordSalt);
+            HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out var passwordHash, out var passwordSalt);
 
             var user = new User
             {
@@ -31,9 +29,7 @@ namespace VideoApp.Business.Concrete
                 Email = userForRegisterDto.Email,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                Status = true,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
+                Status = true
             };
             _userService.Add(user);
             return new SuccessDataResult<User>(user, "User created.");
