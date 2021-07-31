@@ -32,6 +32,7 @@ namespace VideoApp.Core.DataAccess.EntityFramework
 
         public void Add(TEntity entity)
         {
+            entity.CreatedAt = DateTime.Now;
             var entry = Context.Entry(entity);
             entry.State = EntityState.Added;
             Context.SaveChanges();
@@ -39,6 +40,7 @@ namespace VideoApp.Core.DataAccess.EntityFramework
 
         public void Update(TEntity entity)
         {
+            entity.UpdatedAt = DateTime.Now;
             var entry = Context.Entry(entity);
             entry.State = EntityState.Modified;
             Context.SaveChanges();
