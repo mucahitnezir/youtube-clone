@@ -27,28 +27,37 @@ namespace VideoApp.Business.Concrete
             return new SuccessDataResult<IList<CategoryDto>>(categories);
         }
 
+        public IDataResult<Category> GetById(Guid id)
+        {
+            var category = _categoryDal.Get(c => c.Id == id);
+            if (category == null)
+            {
+                return new ErrorDataResult<Category>(null, "Category not found!");
+            }
+
+            return new SuccessDataResult<Category>(category);
+        }
+
         public IResult Add(CategoryCreateUpdateDto categoryDto)
         {
-            var category = new Category
-            {
-                Name = categoryDto.Name,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
-            };
+            var category = _mapper.Map<Category>(categoryDto);
             _categoryDal.Add(category);
+
             return new SuccessResult("Category created.");
         }
 
         public IResult Update(Guid id, CategoryCreateUpdateDto categoryDto)
         {
-            var category = new Category
+            var result = GetById(id);
+            if (!result.Success)
             {
-                Id = id,
-                Name = categoryDto.Name,
-                UpdatedAt = DateTime.Now
-            };
+                return new ErrorResult(result.Message);
+            }
 
+            var category = result.Data;
+            category.Name = categoryDto.Name;
             _categoryDal.Update(category);
+
             return new SuccessResult("Category updated.");
         }
     }
