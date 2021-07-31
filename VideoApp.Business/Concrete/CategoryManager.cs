@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AutoMapper;
 using VideoApp.Business.Abstract;
 using VideoApp.Core.Utilities.Results;
 using VideoApp.DataAccess.Abstract;
@@ -10,20 +11,23 @@ namespace VideoApp.Business.Concrete
 {
     public class CategoryManager : ICategoryService
     {
+        private readonly IMapper _mapper;
         private readonly ICategoryDal _categoryDal;
 
-        public CategoryManager(ICategoryDal categoryDal)
+        public CategoryManager(ICategoryDal categoryDal, IMapper mapper)
         {
             _categoryDal = categoryDal;
+            _mapper = mapper;
         }
 
-        public IDataResult<IList<Category>> GetList()
+        public IDataResult<IList<CategoryDto>> GetList()
         {
             var categoryList = _categoryDal.GetList();
-            return new SuccessDataResult<IList<Category>>(categoryList);
+            var categories = _mapper.Map<IList<CategoryDto>>(categoryList);
+            return new SuccessDataResult<IList<CategoryDto>>(categories);
         }
 
-        public IResult Add(CategoryDto categoryDto)
+        public IResult Add(CategoryCreateUpdateDto categoryDto)
         {
             var category = new Category
             {
@@ -35,7 +39,7 @@ namespace VideoApp.Business.Concrete
             return new SuccessResult("Category created.");
         }
 
-        public IResult Update(Guid id, CategoryDto categoryDto)
+        public IResult Update(Guid id, CategoryCreateUpdateDto categoryDto)
         {
             var category = new Category
             {

@@ -2,7 +2,7 @@ using VideoApp.Core.Entities;
 
 namespace VideoApp.Entities.DTOs
 {
-    public class CategoryDto : DtoBase
+    public class CategoryCreateUpdateDto : IDto
     {
         public string Name { get; set; }
     }

@@ -1,4 +1,6 @@
 using AutoMapper;
+using VideoApp.Entities.Concrete;
+using VideoApp.Entities.DTOs;
 
 namespace VideoApp.Business.AutoMapper
 {
@@ -6,7 +8,8 @@ namespace VideoApp.Business.AutoMapper
     {
         public AutoMapperProfile()
         {
-            // AutoMapper configurations..
+            CreateMap<Category, CategoryDto>();
+            CreateMap<CategoryCreateUpdateDto, Category>();
         }
     }
 }

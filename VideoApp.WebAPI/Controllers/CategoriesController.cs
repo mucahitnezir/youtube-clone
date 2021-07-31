@@ -26,7 +26,7 @@ namespace VideoApp.WebAPI.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Category.Add")]
-        public IActionResult Add([FromBody] CategoryDto categoryDto)
+        public IActionResult Add([FromBody] CategoryCreateUpdateDto categoryDto)
         {
             var result = _categoryService.Add(categoryDto);
             return result.Success ? Ok(result.Message) : BadRequest(result.Message);
@@ -34,7 +34,7 @@ namespace VideoApp.WebAPI.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Category.Update")]
-        public IActionResult Update(Guid id, [FromBody] CategoryDto categoryDto)
+        public IActionResult Update(Guid id, [FromBody] CategoryCreateUpdateDto categoryDto)
         {
             var result = _categoryService.Update(id, categoryDto);
             return result.Success ? Ok(result.Message) : BadRequest(result.Message);
