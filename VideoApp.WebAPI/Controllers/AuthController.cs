@@ -1,5 +1,6 @@
 using System;
 using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VideoApp.Business.Abstract;
@@ -11,13 +12,15 @@ namespace VideoApp.WebAPI.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IAuthService _authService;
         private readonly IUserService _userService;
 
-        public AuthController(IAuthService authService, IUserService userService)
+        public AuthController(IAuthService authService, IUserService userService, IMapper mapper)
         {
             _authService = authService;
             _userService = userService;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -65,14 +68,7 @@ namespace VideoApp.WebAPI.Controllers
             var email = currentUser.FindFirst(ClaimTypes.Email)?.Value;
             var user = _userService.GetByEmail(email);
 
-            var userDto = new CurrentUserDto
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                CreatedAt = user.CreatedAt
-            };
+            var userDto = _mapper.Map<CurrentUserDto>(user);
             return Ok(userDto);
         }
 
